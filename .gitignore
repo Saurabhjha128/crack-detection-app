@@ -1,3 +1,15 @@
+*.h5
+*.pth
+*.pt
+*.zip
+*.tar
+*.tar.gz
+*.log
+__pycache__/
+*.sqlite3
+.vscode/
+.env
+.idea/
 
 crack-localization/
 venv/
