@@ -1,0 +1,20 @@
+/* static/css/style.css */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+.card-custom {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.btn-custom:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(38, 166, 154, 0.5);
+}
+.table-custom th {
+    border-bottom: none;
+}
+.table-custom td img {
+    transition: transform 0.3s;
+}
+.table-custom td img:hover {
+    transform: scale(1.1);
+}
