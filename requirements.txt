@@ -1,9 +1,8 @@
 flask
 flask_sqlalchemy
+torch==2.0.1+cpu
+torchvision==0.15.2+cpu
 numpy
 pillow
-opencv-python
+opencv-python-headless
 gunicorn
-torch==2.2.0+cpu
-torchvision==0.17.0+cpu
---find-links https://download.pytorch.org/whl/cpu
