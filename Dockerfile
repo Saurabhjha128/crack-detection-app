@@ -2,9 +2,10 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install system packages
+# Install system packages needed by OpenCV and others
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project code
@@ -16,7 +17,7 @@ RUN pip install --upgrade pip
 # Install CPU-only torch and torchvision
 RUN pip install --no-cache-dir torch==2.0.1+cpu torchvision==0.15.2+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
-# Install other dependencies
+# Install all other dependencies
 RUN pip install --no-cache-dir \
     flask \
     flask_sqlalchemy \
@@ -28,5 +29,5 @@ RUN pip install --no-cache-dir \
 # Expose port
 ENV PORT=8080
 
-# Start app (use shell form to expand $PORT)
+# Start app using shell form so $PORT expands
 CMD gunicorn webapp.backend.app:app --bind 0.0.0.0:$PORT
