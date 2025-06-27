@@ -44,8 +44,9 @@ print(f"Using device: {device}")
 model = models.resnet50(weights=None)
 model.fc = nn.Linear(model.fc.in_features, 2)
 print("Model architecture loaded.")
+model_path = os.path.join(os.path.dirname(__file__), "crack_model_final.pth")
 
-model_path = "crack_model_final.pth"
+# model_path = "crack_model_final.pth"
 print(f"Model path: {model_path}")
 print(f"Model path exists: {os.path.exists(model_path)}")
 if not os.path.exists(model_path):
