@@ -1,32 +1,33 @@
-# Use a slim Python base image
 FROM python:3.10-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install only the absolutely necessary system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
     libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy project files
+# Copy project code
 COPY . /app
 
-# Install only CPU versions of torch and torchvision first (saves space)
-RUN pip install --no-cache-dir torch torchvision
+# Install pip first
+RUN pip install --upgrade pip
 
-# Install other dependencies
+# Install CPU-only torch first to avoid pulling CUDA wheels
+RUN pip install --no-cache-dir torch==2.0.1+cpu torchvision==0.15.2+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# Install the rest
 RUN pip install --no-cache-dir \
     flask \
     flask_sqlalchemy \
     numpy \
     pillow \
-    opencv-python \
     gunicorn
 
-# Expose the port (Railway uses PORT env var)
+# **IMPORTANT: skip opencv-python here** (see note below)
+
+# Expose Railway port
 ENV PORT=8080
 
-# Start the app
+# Start app
 CMD ["gunicorn", "webapp.backend.app:app", "--bind", "0.0.0.0:$PORT"]
