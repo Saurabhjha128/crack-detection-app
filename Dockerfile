@@ -30,7 +30,7 @@ RUN pip install --no-cache-dir \
 ENV PORT=8080
 
 # Start app
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:$PORT"]
+CMD ["gunicorn", "webapp.backend.app:app", "--bind", "0.0.0.0:$PORT"]
 
 
 
