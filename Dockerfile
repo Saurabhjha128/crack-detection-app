@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install only the absolutely necessary system packages
+# Install system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
     && rm -rf /var/lib/apt/lists/*
@@ -10,28 +10,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy project code
 COPY . /app
 
-# Install pip first
+# Upgrade pip
 RUN pip install --upgrade pip
 
-# Install CPU-only torch first to avoid pulling CUDA wheels
+# Install CPU-only torch and torchvision
 RUN pip install --no-cache-dir torch==2.0.1+cpu torchvision==0.15.2+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
-# Install the rest
+# Install other dependencies
 RUN pip install --no-cache-dir \
     flask \
     flask_sqlalchemy \
     numpy \
     pillow \
-    gunicorn
+    gunicorn \
+    opencv-python
 
-# **IMPORTANT: skip opencv-python here** (see note below)
-
-# Expose Railway port
+# Expose port
 ENV PORT=8080
 
-# Start app
-CMD ["gunicorn", "webapp.backend.app:app", "--bind", "0.0.0.0:$PORT"]
-
-
-
-RUN pip install --no-cache-dir opencv-python
+# Start app (use shell form to expand $PORT)
+CMD gunicorn webapp.backend.app:app --bind 0.0.0.0:$PORT
