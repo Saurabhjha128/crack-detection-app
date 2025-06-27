@@ -2,5 +2,4 @@ flask
 flask_sqlalchemy
 numpy
 pillow
-opencv-python
 gunicorn
