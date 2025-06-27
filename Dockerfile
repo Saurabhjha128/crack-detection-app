@@ -21,13 +21,16 @@ RUN pip install --no-cache-dir torch==2.0.1+cpu torchvision==0.15.2+cpu -f https
 RUN pip install --no-cache-dir \
     flask \
     flask_sqlalchemy \
-    numpy \
+    numpy==1.26.4 \
     pillow \
     gunicorn \
     opencv-python
+
 
 # Expose port
 ENV PORT=8080
 
 # Start app using shell form so $PORT expands
 CMD gunicorn webapp.backend.app:app --bind 0.0.0.0:$PORT
+
+# Force rebuild
